@@ -15,11 +15,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/")
 @SessionScoped
-public class IndexController {
+public class IndexController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String loadForm(HttpSession session, ModelMap model) {
-        if (session.getAttribute("usuarioSessao") != null) {
+
+        if (session.getAttribute(USER_SESSION) != null) {
             return "index";
         }
 
@@ -28,10 +29,10 @@ public class IndexController {
 
     @RequestMapping(value = ContextUrls.LOGIN, method = RequestMethod.POST)
     public String login(HttpSession session, ModelMap model, @RequestParam("accessToken") String accessToken) {
-        if (accessToken.equalsIgnoreCase("brunella")) {
-            session.setAttribute("usuarioSessao", "LOGGED");
+        if (accessToken.equalsIgnoreCase("teste")) {
+            session.setAttribute(USER_SESSION, "LOGGED");
 
-            return "redirect:";
+            return "redirect:/";
         }
 
         model.addAttribute("loginErro", true);
@@ -43,7 +44,7 @@ public class IndexController {
     public String logout(HttpSession session, ModelMap model) {
         session.invalidate();
 
-        return "redirect:";
+        return "redirect:/";
     }
 
 }

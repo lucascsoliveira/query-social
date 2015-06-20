@@ -1,6 +1,7 @@
 package so.coutinho.lucas.querysocial.web.controller;
 
 import javax.faces.bean.SessionScoped;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,16 +14,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping(ContextUrls.SEARCH)
 @SessionScoped
-public class SearchController {
+public class SearchController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public String loadForm(ModelMap model) {
-        return "search";
+    public String loadForm(HttpSession session, ModelMap model) {
+        return doFilter(session, "search");
     }
 
     @RequestMapping(value = ContextUrls.RESULT, method = RequestMethod.GET)
-    public String getResult(ModelMap model) {
-        return "search-result";
+    public String getResult(HttpSession session, ModelMap model) {
+        return doFilter(session, "search-result");
     }
 
 }
