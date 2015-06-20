@@ -17,13 +17,11 @@ public class SearchController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String loadForm(ModelMap model) {
-
         return "search";
     }
 
-    @RequestMapping(value = ContextUrls.SEARCH_RESULT, method = RequestMethod.GET)
+    @RequestMapping(value = ContextUrls.RESULT, method = RequestMethod.GET)
     public String getResult(ModelMap model) {
-
         return "search-result";
     }
 

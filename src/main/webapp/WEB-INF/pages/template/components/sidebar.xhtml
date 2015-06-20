@@ -10,14 +10,14 @@
         <h5 class="centered">Marcel Newman</h5>
 
         <li class="mt">
-            <a href="#{contextUrls.index}">
+            <a href="#{request.contextPath}">
                 <i class="fa fa-home"></i>
                 <span>#{msg['menu.home']}</span>
             </a>
         </li>
 
         <li class="sub-menu">
-            <a href="#{contextUrls.search}">
+            <a href="#{request.contextPath}#{contextUrls.search}">
                 <i class="fa fa-search"></i>
                 <span>#{msg['menu.nova_busca']}</span>
             </a>
@@ -33,7 +33,7 @@
         -->
 
         <li class="sub-menu">
-            <a href="#{contextUrls.root}">
+            <a href="#{request.contextPath}#{contextUrls.logout}">
                 <i class="fa fa-power-off"></i>
                 <span>#{msg['menu.logoff']}</span>
             </a>

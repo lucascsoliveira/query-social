@@ -37,11 +37,20 @@
         <!-- Main container -->
         <div id="login-page">
             <div class="container">
-                <form class="form-login" action="#{contextUrls.index}">
+                <form class="form-login" action="#{request.contextPath}#{contextUrls.login}" method="post">
                     <h2 class="form-login-heading">#{msg['login.form.cabecalho']}</h2>
                     <div class="login-wrap">
                         <div class="login-social-link centered">
-                            <p>#{msg['login.form.aviso']}</p>
+                            <h:panelGroup rendered="#{loginErro}">
+                                <div class="alert alert-danger" role="alert">
+                                    <i class="fa fa-exclamation-triangle"/>
+                                    <span>#{msg['login.form.erro']}</span>
+                                </div>
+                            </h:panelGroup>
+
+                            <input id="accessToken" name="accessToken" type="text" class="form-control" placeholder="#{msg['login.form.placeholder.accesstoken']}"/>
+                            <!--<p>#{msg['login.form.erro']}</p>-->
+                            <br/>
                             <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> #{msg['login.button.facebook']}</button>
                         </div>
                     </div>

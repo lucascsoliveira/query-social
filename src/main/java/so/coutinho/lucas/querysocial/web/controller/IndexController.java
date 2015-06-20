@@ -1,57 +1,49 @@
 package so.coutinho.lucas.querysocial.web.controller;
 
 import javax.faces.bean.SessionScoped;
+import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ *
+ * @author Lucas
+ */
 @Controller
-@RequestMapping(ContextUrls.INDEX)
+@RequestMapping("/")
 @SessionScoped
 public class IndexController {
 
     @RequestMapping(method = RequestMethod.GET)
-    public String loadForm(ModelMap model) {
+    public String loadForm(HttpSession session, ModelMap model) {
+        if (session.getAttribute("usuarioSessao") != null) {
+            return "index";
+        }
 
-//		preProc(model);
-        return "index";
+        return "signin";
     }
 
-//	private void preProc(ModelMap model)
-//	{
-//		Usuario usuario = new Usuario();
-//		
-//		model.addAttribute("MensagemInicial", "Bem vindo JEDI!");
-//		
-//		model.addAttribute("usuario", usuario);
-//	}
-//
-//	@RequestMapping(value = "/autenticarUsuario", method = RequestMethod.POST)
-//	public String addUsuario(@ModelAttribute Usuario usuario,
-//			ModelMap model) {
-//		
-//		if (usuario.getLogin().equals("LEDS") && usuario.getSenha().equals("1234"))
-//		{
-//			
-//			usuario.setNome("JEDI");
-//			model.addAttribute("usuario", usuario);
-//			
-//			return "result";	
-//		}
-//			return "redirect:/Mensagem/ErrorLogin";
-//		
-//	}
-//	
-//	@RequestMapping(value="/Mensagem/{mensagem}",method = RequestMethod.GET)
-//	public String loadForm(ModelMap model,@PathVariable String mensagem) {
-//
-//		preProc(model);
-//		if (mensagem.equals("ErrorLogin"))
-//		{
-//			model.addAttribute("mensagem", "Usuario Invalido");	
-//		}
-//		
-//		return "index";
-//	}
+    @RequestMapping(value = ContextUrls.LOGIN, method = RequestMethod.POST)
+    public String login(HttpSession session, ModelMap model, @RequestParam("accessToken") String accessToken) {
+        if (accessToken.equalsIgnoreCase("brunella")) {
+            session.setAttribute("usuarioSessao", "LOGGED");
+
+            return "redirect:";
+        }
+
+        model.addAttribute("loginErro", true);
+
+        return "signin";
+    }
+
+    @RequestMapping(value = ContextUrls.LOGOUT, method = RequestMethod.GET)
+    public String logout(HttpSession session, ModelMap model) {
+        session.invalidate();
+
+        return "redirect:";
+    }
+
 }

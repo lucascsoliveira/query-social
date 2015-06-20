@@ -20,7 +20,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+<!--                    <div class="form-group">
                         <label class="col-sm-2 col-sm-2 control-label">#{msg['search.label.data_inicio']}</label>
                         <div class="col-sm-10">
                             <input type="text" class="form-control"/>
@@ -31,17 +31,38 @@
                         <div class="col-sm-10">
                             <input type="text" class="form-control"/>
                         </div>
-                    </div>
+                    </div>-->
 
-                    <div class="form-group">
-                        <label class="col-sm-2 col-sm-2 control-label">#{msg['search.label.limite']}</label>
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control"/>
-                            <span class="help-block">#{msg['search.text.help_limite']}</span>
-                        </div>
-                    </div>
                     <button type="submit" class="btn btn-theme btn-block">#{msg['search.button.buscar']}</button>
                 </form>
+            </div>
+
+            <div class="row mt">
+                <div class="col-lg-12">
+                    <div class="content-panel">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#{msg['search-result.tabela.coluna.checkbox']}</th>
+                                    <th>#{msg['search-result.tabela.coluna.pagina']}</th>
+                                    <th>#{msg['search-result.tabela.coluna.link']}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox" value=""/></td>
+                                    <td>CocaCola Brasil</td>
+                                    <td><a href="https://pt-br.facebook.com/CocaColaBrasil">https://pt-br.facebook.com/CocaColaBrasil</a></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" value=""/></td>
+                                    <td>Pepsi Brasil</td>
+                                    <td><a href="https://pt-br.facebook.com/PepsiBrasil">https://pt-br.facebook.com/PepsiBrasil</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
         </ui:define>
     </ui:composition>
