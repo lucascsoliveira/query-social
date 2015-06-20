@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      lang="pt-br">
+
+    <ui:component>
+        <p class="centered"><a href="#"><h:graphicImage library="img" name="ui-sam.jpg" class="img-circle" width="60"/></a></p>
+        <h5 class="centered">Marcel Newman</h5>
+
+        <li class="mt">
+            <a href="index">
+                <i class="fa fa-home"></i>
+                <span>#{msg['menu.home']}</span>
+            </a>
+        </li>
+
+        <li class="sub-menu">
+            <a href="search">
+                <i class="fa fa-search"></i>
+                <span>#{msg['menu.nova_busca']}</span>
+            </a>
+        </li>
+
+        <!--
+        <li class="sub-menu">
+            <a href="old-searches.xhtml">
+                <i class="fa fa-history"></i>
+                <span>#{msg['menu.minhas_buscas']}</span>
+            </a>
+        </li>
+        -->
+
+        <li class="sub-menu">
+            <a href="#{contextUrls.baseURL}/">
+                <i class="fa fa-power-off"></i>
+                <span>#{msg['menu.logoff']}</span>
+            </a>
+        </li>
+    </ui:component>
+</html>

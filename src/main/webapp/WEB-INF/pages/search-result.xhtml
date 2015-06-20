@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      lang="pt-br">
+
+    <ui:composition template="template/dashboard.xhtml">
+        <ui:define name="#{section['head.css_custom']}">
+            <link rel="stylesheet" href="http://cdn.oesmith.co.uk/morris-0.4.3.min.css"/>
+        </ui:define>
+
+        <ui:define name="#{section['body.content.title']}">
+            Resultado da busca
+        </ui:define>
+
+        <ui:define name="#{section['body.content.content']}">
+            <div id="morris">
+                <div class="row mt">
+                    <div class="col-lg-6">
+                        <div class="content-panel">
+                            <div class="panel-body">
+                                <div id="hero-area" class="graph"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt">
+                <div class="col-lg-6">
+                    <div class="content-panel">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>#{msg['search-result.tabela.coluna.checkbox']}</th>
+                                    <th>#{msg['search-result.tabela.coluna.pagina']}</th>
+                                    <th>#{msg['search-result.tabela.coluna.link']}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input type="checkbox" value=""/></td>
+                                    <td>CocaCola Brasil</td>
+                                    <td><a href="https://pt-br.facebook.com/CocaColaBrasil">https://pt-br.facebook.com/CocaColaBrasil</a></td>
+                                </tr>
+                                <tr>
+                                    <td><input type="checkbox" value=""/></td>
+                                    <td>Pepsi Brasil</td>
+                                    <td><a href="https://pt-br.facebook.com/PepsiBrasil">https://pt-br.facebook.com/PepsiBrasil</a></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </ui:define>
+
+        <ui:define name="#{section['body.script_custom']}">
+            <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+            <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
+            <h:outputScript library="js" name="morris-conf.js"/>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      lang="pt-br">
+
+    <h:head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta name="description" content=""/>
+        <meta name="author" content=""/>
+        <meta name="keyword" content=""/>
+
+        <title>#{msg['title']}</title>
+
+        <!-- Bootstrap core CSS -->
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+
+        <!-- Awesome font CSS -->
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"/>
+
+        <!-- Template CSS -->
+        <h:outputStylesheet library="css" name="style.css"/>
+        <h:outputStylesheet library="css" name="style-responsive.css"/>
+
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+          <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+          <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </h:head>
+
+    <h:body>
+        <!-- CONTENT - START -->
+        <!-- Main container -->
+        <div id="login-page">
+            <div class="container">
+                <form class="form-login" action="#">
+                    <h2 class="form-login-heading">#{msg['login.form.cabecalho']}</h2>
+                    <div class="login-wrap">
+                        <div class="login-social-link centered">
+                            <p>#{msg['login.form.aviso']}</p>
+                            <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> #{msg['login.button.facebook']}</button>
+                        </div>
+                    </div>
+                </form>	  	
+            </div>
+        </div>
+        <!-- CONTENT -  END  -->
+
+        <!-- SCRIPT - START -->
+        <!-- Bootstrap -->
+        <h:outputScript library="js" name="bootstrap.min.js"/>
+
+        <!-- JQuery -->
+        <h:outputScript library="js" name="jquery.js"/>
+        <!-- SCRIPT -  END  -->
+
+        <!-- SCRIPT_CUSTOM - START -->
+        <ui:insert name="#{section['body.script_custom']}"/>
+        <!-- SCRIPT_CUSTOM -  END  -->
+
+        <!--BACKSTRETCH-->
+        <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
+        <h:outputScript library="js" name="jquery.backstretch.min.js"/>
+
+        <script>
+            $.backstretch("#{resource['img/login-bg.jpg']}", {speed: 500});
+        </script>
+    </h:body>
+</html>
