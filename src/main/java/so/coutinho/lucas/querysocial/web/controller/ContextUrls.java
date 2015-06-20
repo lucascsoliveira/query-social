@@ -11,8 +11,8 @@ import lombok.Getter;
  *
  * @author Lucas
  */
-@ManagedBean
 @ApplicationScoped
+@ManagedBean
 @Getter
 public class ContextUrls {
 
@@ -21,15 +21,41 @@ public class ContextUrls {
      */
     public static final String INDEX = "/index";
     public static final String SEARCH = "/search";
-    public static final String SEARCH_RESULT = "/result";
 
-    public String getBaseURL() {
+    /**
+     * Metodos
+     */
+    public static final String RESULT = "/result";
+
+    /**
+     * Metodos auxiliares
+     */
+//    public String getBaseURL() {
+//        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+//        HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
+//        String url = request.getRequestURL().toString();
+//        String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath();
+//
+//        return baseURL;
+//    }
+//    
+    public String getRoot() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
-        String url = request.getRequestURL().toString();
-        String baseURL = url.substring(0, url.length() - request.getRequestURI().length()) + request.getContextPath();
 
-        return baseURL;
+        return request.getContextPath();
     }
+
+    /* ---------------------------------------------------------------------- */
+    /**
+     * Contexts
+     */
+    private final String index = getRoot() + INDEX;
+    private final String search = getRoot() + SEARCH;
+
+    /**
+     * Metodos
+     */
+    private final String result = RESULT;
 
 }
