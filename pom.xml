@@ -3,114 +3,37 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
                              http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
     <name>QuerySocial</name>
     <url>https://github.com/lucascsoliveira/query-social</url>
-    
+
     <groupId>so.coutinho.lucas</groupId>
     <artifactId>query-social</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>war</packaging>
-    
-    <dependencies>
-        <!-- JSF -->
-        <dependency>
-            <groupId>com.sun.faces</groupId>
-            <artifactId>jsf-api</artifactId>
-            <version>2.1.7</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.sun.faces</groupId>
-            <artifactId>jsf-impl</artifactId>
-            <version>2.1.7</version>
-        </dependency>
+    <packaging>pom</packaging>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>jstl</artifactId>
-            <version>1.2</version>
-        </dependency>
+    <modules>
+        <!--<module>query-social-entity</module>-->
+        <module>query-social-webapp</module>
+    </modules>
 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-        </dependency>
-
-        <dependency>
-            <groupId>javax.servlet.jsp</groupId>
-            <artifactId>jsp-api</artifactId>
-            <version>2.1</version>
-        </dependency>
-        
-        <!-- Lombok -->
-        <dependency> 
-            <groupId>org.projectlombok</groupId> 
-            <artifactId>lombok</artifactId> 
-            <version>1.16.4</version> 
-            <scope>provided</scope> 
-        </dependency>
-        
-        <!-- Primefaces -->
-        <dependency>  
-            <groupId>org.primefaces</groupId>  
-            <artifactId>primefaces</artifactId>  
-            <version>5.2</version>  
-        </dependency>
-        
-        <!-- RestFB -->
-        <dependency>
-            <groupId>com.restfb</groupId>
-            <artifactId>restfb</artifactId>
-            <version>1.11.0</version>
-        </dependency>
-        
-        <!-- Spring 3 dependencies -->
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-core</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-webmvc</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-		
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-		
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aspects</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-aop</artifactId>
-            <version>${spring.version}</version>
-        </dependency>
-    </dependencies>
-    
     <properties>
+        <java.version>1.7</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <spring.version>3.2.2.RELEASE</spring.version>
     </properties>
 
     <build>
-        <finalName>webapp</finalName>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <source>${java.version}</source>
+                        <target>${java.version}</target>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
-
 </project>
