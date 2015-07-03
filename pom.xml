@@ -13,10 +13,19 @@
     <packaging>pom</packaging>
 
     <modules>
-        <!--<module>query-social-entity</module>-->
+		<module>query-social-entity</module>
         <module>query-social-webapp</module>
     </modules>
-
+	
+	<dependencies>
+	<!-- Lombok -->
+        <dependency> 
+            <groupId>org.projectlombok</groupId> 
+            <artifactId>lombok</artifactId> 
+            <version>1.16.4</version> 
+            <scope>provided</scope> 
+        </dependency>
+</dependencies>
     <properties>
         <java.version>1.7</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
