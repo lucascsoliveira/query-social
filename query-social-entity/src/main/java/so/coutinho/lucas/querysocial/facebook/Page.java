@@ -10,11 +10,11 @@ public interface Page extends FacebookEntity {
 
     public String getCategory();
 
-    public String getLikes();
+    public Long getLikes();
 
     public String getLink();
 
-    public String getTalkingAboutCount();
+    public Long getTalkingAboutCount();
 
     public String getUsername();
 
