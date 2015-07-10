@@ -13,23 +13,22 @@ abstract class FacebookEntityImpl implements FacebookEntity {
 
     private String id;
     private String name;
-    private byte[] profilePicture;
+    private String profilePicture;
     private String profilePictureURL;
 
     public FacebookEntityImpl() {
         //Do nothing
     }
 
-    public FacebookEntityImpl(String id, String name, String profilePictureURL) {
+    public FacebookEntityImpl(String id, String name, String profilePicture) {
         this.id = id;
         this.name = name;
-        this.profilePicture = convertPicture(profilePictureURL);
-        this.profilePictureURL = profilePictureURL;
+        this.profilePicture = convertPicture(profilePicture);
+        this.profilePictureURL = profilePicture;
     }
 
-    private byte[] convertPicture(String url) {
-        //TODO: Converter perfil (imagem) para byte array
-        return null;
+    private String convertPicture(String url) {
+        return url.replaceAll("&", "&amp;");
     }
 
 }

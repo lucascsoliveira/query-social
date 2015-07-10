@@ -10,6 +10,8 @@ interface FacebookEntity {
 
     public String getName();
 
-    public byte[] getProfilePicture();
+    public String getProfilePicture();
+
+    public String getProfilePictureURL();
 
 }
