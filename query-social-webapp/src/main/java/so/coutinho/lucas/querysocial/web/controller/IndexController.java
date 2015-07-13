@@ -29,15 +29,9 @@ public class IndexController extends AbstractController {
 
     @RequestMapping(value = ContextUrls.LOGIN, method = RequestMethod.POST)
     public String login(HttpSession session, ModelMap model, @RequestParam("accessToken") String accessToken) {
-        if (accessToken.equalsIgnoreCase("teste")) {
-            session.setAttribute(USER_SESSION, "LOGGED");
+        session.setAttribute(USER_SESSION, "LOGGED");
 
-            return "redirect:/";
-        }
-
-        model.addAttribute("loginErro", true);
-
-        return "signin";
+        return "redirect:/";
     }
 
     @RequestMapping(value = ContextUrls.LOGOUT, method = RequestMethod.GET)

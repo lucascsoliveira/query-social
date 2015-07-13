@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:fb="http://www.facebook.com/2008/fbml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       lang="pt-br">
 
@@ -37,22 +38,29 @@
         <!-- Main container -->
         <div id="login-page">
             <div class="container">
-                <form class="form-login" action="#{request.contextPath}#{contextUrls.login}" method="post">
+                <form id="form-login-facebook" class="form-login" action="#{request.contextPath}#{contextUrls.login}" method="post">
                     <h2 class="form-login-heading">#{msg['login.form.cabecalho']}</h2>
                     <div class="login-wrap">
                         <div class="login-social-link centered">
-                            <h:panelGroup rendered="#{loginErro}">
-                                <div class="alert alert-danger" role="alert">
-                                    <i class="fa fa-exclamation-triangle"/>
-                                    <span>#{msg['login.form.erro']}</span>
-                                </div>
-                            </h:panelGroup>
-
-                            <input id="accessToken" name="accessToken" type="text" class="form-control" placeholder="#{msg['login.form.placeholder.accesstoken']}"/>
-                            <!--<p>#{msg['login.form.erro']}</p>-->
+                            <div>
+                                <input id="accessToken" name="accessToken" type="hidden"/>
+                                <!--<button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> #{msg['login.button.facebook']}</button>-->
+                                <fb:login-button size="xlarge" scope="email, public_profile, read_insights" onlogin="checkLoginState();"/>
+                            </div>
                             <br/>
-                            <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> #{msg['login.button.facebook']}</button>
                         </div>
+
+                        <div id="div-info" class="alert alert-info" >
+                            <b>#{msg['login.form.info']}</b>
+                            #{msg['login.form.info.text']}
+                        </div>
+
+                        <!--
+                        <div id="div-erro" class="alert alert-danger" role="alert">
+                            <i class="fa fa-exclamation-triangle"/>
+                            <span>#{msg['login.form.erro']}</span>
+                        </div>
+                        -->
                     </div>
                 </form>	  	
             </div>
@@ -62,6 +70,9 @@
         <!-- SCRIPT - START -->
         <!-- Bootstrap -->
         <h:outputScript library="js" name="bootstrap.min.js"/>
+
+        <!-- Bootstrap -->
+        <h:outputScript library="js" name="facebook.js"/>
 
         <!-- JQuery -->
         <h:outputScript library="js" name="jquery.js"/>
