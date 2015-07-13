@@ -2,6 +2,7 @@ package so.coutinho.lucas.querysocial.web.controller;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;
+import lombok.Getter;
 
 /**
  *
@@ -9,6 +10,7 @@ import javax.faces.bean.ManagedBean;
  */
 @ApplicationScoped
 @ManagedBean
+@Getter
 public class ContextUrls {
 
     /**
@@ -22,21 +24,19 @@ public class ContextUrls {
      * Metodos
      */
     public static final String RESULT = "/result";
+//
+//============================================================================//
+//
+    /**
+     * Contexts
+     */
+    public final String login = LOGIN;
+    public final String logout = LOGOUT;
+    public final String search = SEARCH;
 
-    public String getLogin() {
-        return LOGIN;
-    }
-
-    public String getLogout() {
-        return LOGOUT;
-    }
-
-    public String getSearch() {
-        return SEARCH;
-    }
-
-    public String getResult() {
-        return RESULT;
-    }
+    /**
+     * Metodos
+     */
+    public final String result = RESULT;
 
 }
