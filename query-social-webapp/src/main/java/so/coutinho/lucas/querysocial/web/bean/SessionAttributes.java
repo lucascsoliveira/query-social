@@ -1,16 +1,14 @@
 package so.coutinho.lucas.querysocial.web.bean;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
 import lombok.Getter;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author Lucas
  */
-@ApplicationScoped
-@ManagedBean
 @Getter
+@Controller
 public class SessionAttributes {
 
     public static final String FB_SESSION = "fbSession";

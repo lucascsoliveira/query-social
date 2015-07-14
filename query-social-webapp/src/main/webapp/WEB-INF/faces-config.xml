@@ -7,6 +7,9 @@
     version="2.0">
     
     <application>
+        <!-- DELEGA A CRIAÇÃO DOS MANAGEDBEANS PARA O SPRING -->
+        <el-resolver>org.springframework.web.jsf.el.SpringBeanFacesELResolver</el-resolver>
+        
         <resource-bundle>
             <base-name>so.coutinho.lucas.querysocial.message.messages</base-name>
             <var>msg</var>

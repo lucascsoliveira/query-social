@@ -1,16 +1,14 @@
 package so.coutinho.lucas.querysocial.web.bean;
 
-import javax.faces.bean.ApplicationScoped;
-import javax.faces.bean.ManagedBean;
 import lombok.Getter;
+import org.springframework.stereotype.Controller;
 
 /**
  *
  * @author Lucas
  */
-@ApplicationScoped
-@ManagedBean
 @Getter
+@Controller
 public class ContextUrls {
 
     /**
@@ -26,17 +24,19 @@ public class ContextUrls {
     public static final String RESULT = "/result";
 //
 //============================================================================//
+//                                                                            //
+//============================================================================//
 //
     /**
      * Contexts
      */
-    public final String login = LOGIN;
-    public final String logout = LOGOUT;
-    public final String search = SEARCH;
+    public String login = LOGIN;
+    public String logout = LOGOUT;
+    public String search = SEARCH;
 
     /**
      * Metodos
      */
-    public final String result = RESULT;
+    public String result = RESULT;
 
 }

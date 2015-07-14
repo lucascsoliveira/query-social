@@ -1,13 +1,14 @@
 package so.coutinho.lucas.querysocial.web.controller;
 
 import so.coutinho.lucas.querysocial.web.bean.ContextUrls;
-import javax.faces.bean.SessionScoped;
 import javax.servlet.http.HttpSession;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.WebApplicationContext;
 import so.coutinho.lucas.querysocial.facebook.FacebookWrapper;
 import so.coutinho.lucas.querysocial.web.bean.SessionAttributes;
 
@@ -17,7 +18,7 @@ import so.coutinho.lucas.querysocial.web.bean.SessionAttributes;
  */
 @Controller
 @RequestMapping(ContextUrls.SEARCH)
-@SessionScoped
+@Scope(WebApplicationContext.SCOPE_SESSION)
 public class SearchController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.GET)
