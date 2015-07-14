@@ -6,6 +6,7 @@
 package so.coutinho.lucas.querysocial.web.controller;
 
 import javax.servlet.http.HttpSession;
+import static so.coutinho.lucas.querysocial.web.bean.SessionAttributes.*;
 
 /**
  *
@@ -13,10 +14,8 @@ import javax.servlet.http.HttpSession;
  */
 public class AbstractController {
 
-    protected final String USER_SESSION = "userSession";
-
     public String doFilter(HttpSession session, String page) {
-        if (session.getAttribute(USER_SESSION) != null) {
+        if (session.getAttribute(FB_SESSION) != null) {
             return page;
         }
 

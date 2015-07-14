@@ -1,4 +1,4 @@
-package so.coutinho.lucas.querysocial.web.controller;
+package so.coutinho.lucas.querysocial.web.bean;
 
 import javax.faces.bean.ApplicationScoped;
 import javax.faces.bean.ManagedBean;

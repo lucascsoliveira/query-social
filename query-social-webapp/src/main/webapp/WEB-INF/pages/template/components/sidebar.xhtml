@@ -6,8 +6,8 @@
       lang="pt-br">
 
     <ui:component>
-        <p class="centered"><a href="#"><h:graphicImage library="img" name="ui-sam.jpg" class="img-circle" width="60"/></a></p>
-        <h5 class="centered">Marcel Newman</h5>
+        <p class="centered"><a href="#{userLink}"><img src="#{userPicture}" class="img-circle" width="60"/></a></p>
+        <h5 class="centered">#{userName}</h5>
 
         <li class="mt">
             <a href="#{request.contextPath}">
