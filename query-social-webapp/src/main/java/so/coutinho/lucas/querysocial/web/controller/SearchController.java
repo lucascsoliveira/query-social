@@ -7,6 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import so.coutinho.lucas.querysocial.facebook.FacebookWrapper;
+import so.coutinho.lucas.querysocial.web.bean.SessionAttributes;
 
 /**
  *
@@ -23,8 +26,11 @@ public class SearchController extends AbstractController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public String loadList(HttpSession session, ModelMap model) {
-        model.addAttribute("exibeResultado", true);
+    public String loadList(HttpSession session, ModelMap model, @RequestParam("query") String query) {
+        FacebookWrapper fbWrapper = (FacebookWrapper) session.getAttribute(SessionAttributes.FB_SESSION);
+
+        //FIXME: String QUERY não pode ser vazia.
+        //TODO: Preencher LIST<PAGE> PAGES em SearchBean.
         return doFilter(session, "search");
     }
 
