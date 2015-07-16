@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-class PageImpl extends FacebookEntityImpl implements Page {
+public class PageImpl extends FacebookEntityImpl implements Page {
 
     private String about;
     private String category;

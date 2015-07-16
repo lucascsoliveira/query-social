@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-abstract class FacebookEntityImpl implements FacebookEntity {
+public abstract class FacebookEntityImpl implements FacebookEntity {
 
     private String id;
     private String name;

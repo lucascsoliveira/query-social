@@ -9,7 +9,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-class UserImpl extends FacebookEntityImpl implements User {
+public class UserImpl extends FacebookEntityImpl implements User {
 
     private String email;
 
