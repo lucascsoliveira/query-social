@@ -15,7 +15,7 @@
             <form action="#{request.contextPath}#{contextUrls.search}" class="form-inline style-form" method="post">
                 <div class="form-group">
                     <div class="input-group">
-                        <input id="query" name="query" type="text" class="form-control" placeholder="#{msg['search.placeholder.busca']}"/>
+                        <input id="query" name="query" type="text" class="form-control" placeholder="#{msg['search.placeholder.busca']}" required="true"/>
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-theme">#{msg['search.button.buscar']}</button>
                         </div>
@@ -23,55 +23,88 @@
                 </div>
             </form>
 
-            <!--
-            <table class="table table-hover"></table>
-            <div class="form-inline centered">
-                <input type="text" class="form-control" placeholder="#{msg['search.placeholder.data_inicio']}"/>
-                <input type="text" class="form-control" placeholder="#{msg['search.placeholder.data_fim']}"/>
-                <button type="submit" class="btn btn-theme">#{msg['search.button.graph']}</button>
-            </div>
-            -->
-
-            <form action="#{request.contextPath}#{contextUrls.search}#{contextUrls.result}" method="post">
+            <h:panelGroup rendered="#{showSearch}">
                 <div class="row mt">
                     <div class="col-lg-12">
                         <div class="content-panel">
-                            <p:dataTable id="resultDataTable" var="page" value="#{searchBean.pages}" selection="#{searchBean.selectedPages}" rowKey="#{page.id}" style="margin-bottom:0">
-                                <p:column selectionMode="multiple" style="width:16px;text-align:center"/>
-                                <p:column headerText="#{msg['search.tabela.coluna.name']}">
-                                    <h:outputText value="#{page.name}" />
-                                </p:column>
-                                <p:column headerText="#{msg['search.tabela.coluna.link']}">
+                            <h:dataTable var="page" value="#{searchBean.pages}" styleClass="table table-hover pagina">
+                                <h:column>
+                                    <div class="checkPagina">
+                                        <input type="checkbox"/>
+                                        <input value="#{page.id}" type="hidden"/>
+                                    </div>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">#{msg['search.tabela.coluna.name']}</f:facet>
+                                    <h:outputText value="#{page.name}"/>
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">#{msg['search.tabela.coluna.link']}</f:facet>
                                     <h:outputText value="#{page.link}" />
-                                </p:column>
-                                <p:column headerText="#{msg['search.tabela.coluna.category']}">
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">#{msg['search.tabela.coluna.category']}</f:facet>
                                     <h:outputText value="#{page.category}" />
-                                </p:column>
-                                <p:column headerText="#{msg['search.tabela.coluna.likes']}">
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">#{msg['search.tabela.coluna.likes']}</f:facet>
                                     <h:outputText value="#{page.likes}" />
-                                </p:column>
-                                <p:column headerText="#{msg['search.tabela.coluna.talkingAbout']}">
+                                </h:column>
+                                <h:column>
+                                    <f:facet name="header">#{msg['search.tabela.coluna.talkingAbout']}</f:facet>
                                     <h:outputText value="#{page.talkingAboutCount}" />
-                                </p:column>
-                            </p:dataTable>
-                            <div class="form-inline centered">
-                                <input id="startDate" name="startDate" class="form-control" placeholder="#{msg['search.placeholder.data_inicio']}"/>
-                                <input id="endDate" name="endDate" class="form-control" placeholder="#{msg['search.placeholder.data_fim']}"/>
-                                <button type="submit" class="btn btn-theme">#{msg['search.button.graph']}</button>
-                            </div>    
+                                </h:column>
+                            </h:dataTable>
+
+                            <form id="formSearch" action="#{request.contextPath}#{contextUrls.search}#{contextUrls.result}" method="post">
+                                <div class="form-inline centered">
+                                    <!-- TODO: Validar datas -->
+                                    <input id="startDate" name="startDate" type="date" class="form-control" placeholder="#{msg['search.placeholder.data_inicio']}" required="true"/>
+                                    <input id="endDate" name="endDate" type="date" class="form-control" placeholder="#{msg['search.placeholder.data_fim']}" required="true"/>
+                                    <input id="selectedPages" name="selectedPages" type="hidden"/>
+                                    <button id="submitButton" type="submit" class="btn btn-theme">#{msg['search.button.graph']}</button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-            </form>
+            </h:panelGroup>
         </ui:define>
 
         <ui:define name="#{section['body.script_custom']}">
             <script>
+                //TODO: Verificar "formatação" do DatePicker
                 $(function () {
                     $("#startDate").datepicker({dateFormat: 'dd/mm/yy'});
                     $("#endDate").datepicker({dateFormat: 'dd/mm/yy'});
                 });
             </script>
+
+            <script>
+                $(document).ready(function () {
+                    selecionados = [];
+                    $('div.checkPagina > input[type="checkbox"]').click(function () {
+                        var checked = $(this).prop("checked");
+                        var hidden = $(this).siblings().first().val();
+                        if (checked) {
+                            selecionados.push(hidden);
+                        } else {
+
+                            var index = selecionados.indexOf(hidden);
+                            if (index > -1) {
+                                selecionados.splice(index, 1);
+                            }
+                        }
+                        console.log(selecionados);
+                    });
+
+                    $('#submitButton').click(function () {
+                        var input = document.getElementById("selectedPages");
+                        input.value = JSON.stringify(selecionados);
+                    });
+                });
+            </script>
+
         </ui:define>
 
     </ui:composition>
