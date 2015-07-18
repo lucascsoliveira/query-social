@@ -6,8 +6,13 @@ import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.Version;
 import com.restfb.exception.FacebookOAuthException;
+import com.restfb.json.JsonObject;
+import com.restfb.types.Insight;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Iterator;
 import java.util.List;
+import so.coutinho.lucas.querysocial.util.Pair;
 
 /**
  *
@@ -17,6 +22,18 @@ public class DefaultFacebookWrapper implements FacebookWrapper {
 
     private static final String PAGE_FIELDS = "id, about, category, likes, link, name, picture, talking_about_count, username";
     private static final String USER_FIELDS = "first_name, gender, email, last_name, locale, name, picture";
+
+    private static final String INSIGHTS = "/insights";
+    private static final String INSIGHTS_PAGE_FANS = INSIGHTS + "/page_fans_country";
+    private static final String INSIGHTS_PAGE_STORYTELLERS = INSIGHTS + "/page_storytellers_by_country";
+
+    private static final String PERIOD_DAY = "/day";
+    private static final String PERIOD_WEEK = "/week";
+    private static final String PERIOD_DAYS_28 = "/days_28";
+    private static final String PERIOD_LIFETIME = "/lifetime";
+
+    private static final int DATE_RANGE_DAYS = 91;
+    private static final Long DATE_RANGE_IN_MILLIS = new Long("7948800000");
 
     private FacebookClient facebookClient;
 
@@ -70,15 +87,13 @@ public class DefaultFacebookWrapper implements FacebookWrapper {
     }
 
     @Override
-    public List<Object> getLikes(Page page, Long epochTimeStart, Long epochTimeEnd) {
-        //TODO: Implementar método
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Pair<String, Long>> getLikes(String pageId, Calendar start, Calendar end) {
+        return getPageInsights(pageId, start, end, INSIGHTS_PAGE_FANS, PERIOD_LIFETIME);
     }
 
     @Override
-    public List<Object> getStoryTellers(Page page, Long epochTimeStart, Long epochTimeEnd) {
-        //TODO: Implementar método
-        throw new UnsupportedOperationException("Not supported yet.");
+    public List<Pair<String, Long>> getStoryTellers(String pageId, Calendar start, Calendar end) {
+        return getPageInsights(pageId, start, end, INSIGHTS_PAGE_STORYTELLERS, PERIOD_DAY);
     }
 
     @Override
@@ -103,5 +118,69 @@ public class DefaultFacebookWrapper implements FacebookWrapper {
         return pages;
     }
 
-    //TODO: Add first_name, gender, email, last_name, locale, name, picture to User(?);
+    private Long toEpochTime(Calendar calendar) {
+        return calendar.getTimeInMillis() / 1000;
+    }
+
+    private Long sumValues(JsonObject valuesByCountry) {
+        Iterator countries = valuesByCountry.keys();
+        long total = 0;
+
+        while (countries.hasNext()) {
+            String country = countries.next().toString();
+            total += valuesByCountry.getLong(country);
+        }
+
+        return total;
+    }
+
+    private String formatDate(String unformatted) {
+        String REGEX = "^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})\\+(\\d{4})$";
+
+        if (unformatted.matches(REGEX)) {
+            return unformatted.replaceAll(REGEX, "$3/$2/$1");
+        } else {
+            return unformatted;
+        }
+    }
+
+    //since (include) - until(exclude)//
+    private List<Pair<String, Long>> getPageInsights(String idPage, Calendar since, Calendar until, String insightPage, String insightPeriod) {
+        List<Pair<String, Long>> list = new ArrayList<>();
+        long millisSince = since.getTimeInMillis();
+        long millisUntil = until.getTimeInMillis();
+
+        // SE UNTIL - SINCE <= 3 MESES
+        if (millisUntil - millisSince <= DATE_RANGE_IN_MILLIS) {
+
+            // Para cada dia, somar os valores de todos os países;
+            // E, add para List< Par<Date,Integer> >
+            long epochSince = toEpochTime(since), epochUntil = toEpochTime(until);
+
+            Connection<Insight> insights = facebookClient.fetchConnection(
+                    idPage + insightPage + insightPeriod,
+                    Insight.class,
+                    Parameter.with("since", epochSince),
+                    Parameter.with("until", epochUntil));
+
+            for (Insight insight : insights.getData()) {
+                for (JsonObject jo : insight.getValues()) {
+                    String date = formatDate(jo.getString("end_time"));
+                    Long likes = jo.getString("value").length() <= 2 ? 0 : sumValues(jo.getJsonObject("value"));
+
+                    list.add(new Pair<>(date, likes));
+                }
+            }
+
+        } else {
+            // return pageLikes(id, since, since+3meses).addAll(pageLikes(id, since+3meses, until);
+            Calendar sinceClone = (Calendar) since.clone();
+            sinceClone.add(Calendar.DAY_OF_MONTH, DATE_RANGE_DAYS);
+            list.addAll(getPageInsights(idPage, since, sinceClone, insightPage, insightPeriod));
+            list.addAll(getPageInsights(idPage, sinceClone, until, insightPage, insightPeriod));
+        }
+
+        return list;
+    }
+
 }

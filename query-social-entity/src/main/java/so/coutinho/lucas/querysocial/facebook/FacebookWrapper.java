@@ -1,6 +1,8 @@
 package so.coutinho.lucas.querysocial.facebook;
 
+import java.util.Calendar;
 import java.util.List;
+import so.coutinho.lucas.querysocial.util.Pair;
 
 /**
  *
@@ -16,9 +18,9 @@ public interface FacebookWrapper {
 
     public boolean isLogged();
 
-    public List<Object> getLikes(Page page, Long epochTimeStart, Long epochTimeEnd);
+    public List<Pair<String, Long>> getLikes(String pageId, Calendar start, Calendar end);
 
-    public List<Object> getStoryTellers(Page page, Long epochTimeStart, Long epochTimeEnd);
+    public List<Pair<String, Long>> getStoryTellers(String pageId, Calendar start, Calendar end);
 
     public User getUser();
 
