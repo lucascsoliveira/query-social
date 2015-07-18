@@ -2,6 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://java.sun.com/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       lang="pt-br">
 
@@ -20,7 +21,7 @@
                     <div class="col-lg-12">
                         <div class="content-panel">
                             <div class="panel-body">
-                                <div id="hero-area" class="graph"></div>
+                                <!-- TODO: Insert chart --> 
                             </div>
                         </div>
                     </div>
@@ -28,11 +29,6 @@
             </div>
         </ui:define>
 
-        <ui:define name="#{section['body.script_custom']}">
-            <script src="http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
-            <script src="http://cdn.oesmith.co.uk/morris-0.4.3.min.js"></script>
-            <h:outputScript library="js" name="morris-conf.js"/>
-        </ui:define>
     </ui:composition>
 
 </html>
