@@ -3,8 +3,6 @@ package so.coutinho.lucas.querysocial.web.controller;
 import so.coutinho.lucas.querysocial.web.bean.ContextUrls;
 import static so.coutinho.lucas.querysocial.web.bean.SessionAttributes.*;
 import javax.servlet.http.HttpSession;
-import lombok.Getter;
-import lombok.Setter;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -20,8 +18,6 @@ import so.coutinho.lucas.querysocial.facebook.User;
  *
  * @author Lucas
  */
-@Getter
-@Setter
 @Controller
 @RequestMapping("/")
 @Scope(WebApplicationContext.SCOPE_SESSION)
