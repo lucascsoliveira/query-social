@@ -5,17 +5,9 @@ import java.util.Calendar;
 import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
-import org.primefaces.model.chart.Axis;
-import org.primefaces.model.chart.AxisType;
-import org.primefaces.model.chart.CategoryAxis;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.LineChartModel;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.context.WebApplicationContext;
+import org.springframework.stereotype.Component;
 import so.coutinho.lucas.querysocial.facebook.FacebookWrapper;
 import so.coutinho.lucas.querysocial.facebook.Page;
-import so.coutinho.lucas.querysocial.util.Pair;
 
 /**
  *
@@ -23,8 +15,7 @@ import so.coutinho.lucas.querysocial.util.Pair;
  */
 @Getter
 @Setter
-@Controller
-@Scope(WebApplicationContext.SCOPE_SESSION)
+@Component
 public class SearchBean {
 
     private Calendar startDate;
