@@ -1,35 +1,54 @@
 package so.coutinho.lucas.querysocial.facebook;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import so.coutinho.lucas.querysocial.util.Pair;
+import so.coutinho.lucas.querysocial.util.Series;
 
 /**
  *
  * @author lucas.oliveira
  */
-public interface FacebookWrapper {
+public abstract class FacebookWrapper {
 
-    public List<Page> searchPages(String query);
+    public abstract List<Page> searchPages(String query);
 
-    public void login(String accessToken);
+    public abstract void login(String accessToken);
 
-    public void logout();
+    public abstract void logout();
 
-    public boolean isLogged();
+    public abstract boolean isLogged();
 
-    public List<Pair<String, Long>> getLikes(String pageId, Calendar start, Calendar end);
+    public abstract Series getLikes(String pageId, Calendar start, Calendar end);
 
-    public List<Pair<String, Long>> getStoryTellers(String pageId, Calendar start, Calendar end);
+    public abstract Series getStoryTellers(String pageId, Calendar start, Calendar end);
 
-    public User getUser();
+    public List<Series> getLikes(List<String> pageIds, Calendar start, Calendar end) {
+        List<Series> series = new ArrayList<>();
 
-    public User getUser(Long id);
+        for (String id : pageIds) {
+            series.add(getLikes(id, start, end));
+        }
 
-    public User getUser(String id);
+        return series;
+    }
 
-    public Page getPage(Long id);
+    public List<Series> getStoryTellers(List<String> pageIds, Calendar start, Calendar end) {
+        List<Series> series = new ArrayList<>();
 
-    public Page getPage(String id);
+        for (String id : pageIds) {
+            series.add(getStoryTellers(id, start, end));
+        }
+
+        return series;
+    }
+
+    public User getUser() {
+        return getUser("me");
+    }
+
+    public abstract User getUser(String id);
+
+    public abstract Page getPage(String id);
 
 }

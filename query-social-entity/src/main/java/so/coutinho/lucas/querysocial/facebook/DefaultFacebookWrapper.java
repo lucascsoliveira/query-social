@@ -10,15 +10,17 @@ import com.restfb.json.JsonObject;
 import com.restfb.types.Insight;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
-import so.coutinho.lucas.querysocial.util.Pair;
+import java.util.TimeZone;
+import so.coutinho.lucas.querysocial.util.Series;
 
 /**
  *
  * @author lucas.oliveira
  */
-public class DefaultFacebookWrapper implements FacebookWrapper {
+public class DefaultFacebookWrapper extends FacebookWrapper {
 
     private static final String PAGE_FIELDS = "id, about, category, likes, link, name, picture, talking_about_count, username";
     private static final String USER_FIELDS = "first_name, gender, email, last_name, locale, name, picture";
@@ -32,7 +34,7 @@ public class DefaultFacebookWrapper implements FacebookWrapper {
     private static final String PERIOD_DAYS_28 = "/days_28";
     private static final String PERIOD_LIFETIME = "/lifetime";
 
-    private static final int DATE_RANGE_DAYS = 91;
+    private static final int DATE_RANGE_DAYS = 92;
     private static final Long DATE_RANGE_IN_MILLIS = new Long("7948800000");
 
     private FacebookClient facebookClient;
@@ -62,23 +64,8 @@ public class DefaultFacebookWrapper implements FacebookWrapper {
     }
 
     @Override
-    public User getUser() {
-        return getUser("me");
-    }
-
-    @Override
-    public User getUser(Long id) {
-        return getUser(id.toString());
-    }
-
-    @Override
     public User getUser(String id) {
         return new UserImpl(facebookClient.fetchObject(id, com.restfb.types.User.class, Parameter.with("fields", USER_FIELDS)));
-    }
-
-    @Override
-    public Page getPage(Long id) {
-        return getPage(id.toString());
     }
 
     @Override
@@ -87,13 +74,13 @@ public class DefaultFacebookWrapper implements FacebookWrapper {
     }
 
     @Override
-    public List<Pair<String, Long>> getLikes(String pageId, Calendar start, Calendar end) {
-        return getPageInsights(pageId, start, end, INSIGHTS_PAGE_FANS, PERIOD_LIFETIME);
+    public Series getLikes(String pageId, Calendar start, Calendar end) {
+        return getSeries(pageId, start, end, INSIGHTS_PAGE_FANS, PERIOD_LIFETIME);
     }
 
     @Override
-    public List<Pair<String, Long>> getStoryTellers(String pageId, Calendar start, Calendar end) {
-        return getPageInsights(pageId, start, end, INSIGHTS_PAGE_STORYTELLERS, PERIOD_DAY);
+    public Series getStoryTellers(String pageId, Calendar start, Calendar end) {
+        return getSeries(pageId, start, end, INSIGHTS_PAGE_STORYTELLERS, PERIOD_DAY);
     }
 
     @Override
@@ -134,19 +121,37 @@ public class DefaultFacebookWrapper implements FacebookWrapper {
         return total;
     }
 
-    private String formatDate(String unformatted) {
-        String REGEX = "^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})\\+(\\d{4})$";
+    private long formatDate(String unformatted) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+        String REGEX = "^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})(\\+\\d{4})$";
 
         if (unformatted.matches(REGEX)) {
-            return unformatted.replaceAll(REGEX, "$3/$2/$1");
+            Integer year = new Integer(unformatted.replaceAll(REGEX, "$1"));
+            Integer month = new Integer(unformatted.replaceAll(REGEX, "$2"));
+            Integer day = new Integer(unformatted.replaceAll(REGEX, "$3"));
+
+            return new GregorianCalendar(year, month - 1, day).getTimeInMillis();
         } else {
-            return unformatted;
+            return 0;
         }
     }
 
     //since (include) - until(exclude)//
-    private List<Pair<String, Long>> getPageInsights(String idPage, Calendar since, Calendar until, String insightPage, String insightPeriod) {
-        List<Pair<String, Long>> list = new ArrayList<>();
+    private Series getSeries(String idPage, Calendar since, Calendar until, String insightPage, String insightPeriod) {
+        String name;
+        Object[][] data;
+
+        name = getPage(idPage).getName();
+        data = getInsightData(idPage, since, until, insightPage, insightPeriod);
+
+        return new Series(name, data);
+    }
+
+    private List<List<Object>> getPageInsights(String idPage, Calendar since, Calendar until, String insightPage, String insightPeriod) {
+        TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+
+        List<List<Object>> data = new ArrayList<>();
+
         long millisSince = since.getTimeInMillis();
         long millisUntil = until.getTimeInMillis();
 
@@ -165,22 +170,41 @@ public class DefaultFacebookWrapper implements FacebookWrapper {
 
             for (Insight insight : insights.getData()) {
                 for (JsonObject jo : insight.getValues()) {
-                    String date = formatDate(jo.getString("end_time"));
-                    Long likes = jo.getString("value").length() <= 2 ? 0 : sumValues(jo.getJsonObject("value"));
+                    List<Object> list2 = new ArrayList<>();
 
-                    list.add(new Pair<>(date, likes));
+                    Long timeMillisUTC = formatDate(jo.getString("end_time"));
+                    Long sumValues = jo.getString("value").length() <= 2 ? 0 : sumValues(jo.getJsonObject("value"));
+
+                    list2.add(timeMillisUTC);
+                    list2.add(sumValues);
+
+                    data.add(list2);
                 }
             }
-
         } else {
             // return pageLikes(id, since, since+3meses).addAll(pageLikes(id, since+3meses, until);
             Calendar sinceClone = (Calendar) since.clone();
-            sinceClone.add(Calendar.DAY_OF_MONTH, DATE_RANGE_DAYS);
-            list.addAll(getPageInsights(idPage, since, sinceClone, insightPage, insightPeriod));
-            list.addAll(getPageInsights(idPage, sinceClone, until, insightPage, insightPeriod));
+            sinceClone.add(Calendar.DAY_OF_MONTH, DATE_RANGE_DAYS - 1);
+            data.addAll(getPageInsights(idPage, since, sinceClone, insightPage, insightPeriod));
+            data.addAll(getPageInsights(idPage, sinceClone, until, insightPage, insightPeriod));
         }
 
-        return list;
+        return data;
+    }
+
+    private Object[][] getInsightData(String idPage, Calendar since, Calendar until, String insightPage, String insightPeriod) {
+        List<List<Object>> listData = getPageInsights(idPage, since, until, insightPage, insightPeriod);
+        Object[][] data = new Object[listData.size()][2];
+
+        int index = 0;
+        for (List<Object> line : listData) {
+            data[index][0] = line.get(0);
+            data[index][1] = line.get(1);
+
+            index++;
+        }
+
+        return data;
     }
 
 }
