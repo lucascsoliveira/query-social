@@ -1,5 +1,6 @@
 package so.coutinho.lucas.querysocial.web.controller;
 
+import com.google.gson.Gson;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -9,11 +10,14 @@ import so.coutinho.lucas.querysocial.web.bean.ContextUrls;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import so.coutinho.lucas.querysocial.facebook.FacebookWrapper;
 import so.coutinho.lucas.querysocial.facebook.Page;
@@ -34,7 +38,6 @@ public class SearchController extends AbstractController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String loadForm(HttpSession session, ModelMap model) {
-        clearBean();
         return doFilter(session, "search");
     }
 
@@ -55,24 +58,29 @@ public class SearchController extends AbstractController {
         searchBean.setStartDate(stringToCalendar(startDate));
         searchBean.setEndDate(stringToCalendar(endDate));
         searchBean.setFacebookWrapper((FacebookWrapper) session.getAttribute(SessionAttributes.FB_SESSION));
-        List<String> ids = stringToList(selectedPages);
+        searchBean.setSelectedPagesIds(stringToList(selectedPages));
 
-        for (String id : ids) {
-            for (Page page : searchBean.getPages()) {
-                if (page.getId().equals(id)) {
-                    searchBean.getSelectedPages().add(page);
-                    break;
-                }
-            }
-        }
-
-        //TODO: Insert Json with data for chart
         return doFilter(session, "search-result");
     }
 
-    private void clearBean() {
-        searchBean.getPages().clear();
-        searchBean.getSelectedPages().clear();
+    @ResponseBody
+    @RequestMapping(value = ContextUrls.RESULT + "/json/likes", method = RequestMethod.GET)
+    public ResponseEntity<String> getJsonLikes() {
+        List<String> ids = searchBean.getSelectedPagesIds();
+        Calendar start = searchBean.getStartDate(), end = searchBean.getEndDate();
+        FacebookWrapper facebookWrapper = searchBean.getFacebookWrapper();
+
+        return new ResponseEntity<>(new Gson().toJson(facebookWrapper.getLikes(ids, start, end)), HttpStatus.OK);
+    }
+
+    @ResponseBody
+    @RequestMapping(value = ContextUrls.RESULT + "/json/storytellers", method = RequestMethod.GET)
+    public ResponseEntity<String> getJsonStoryTellers() {
+        List<String> ids = searchBean.getSelectedPagesIds();
+        Calendar start = searchBean.getStartDate(), end = searchBean.getEndDate();
+        FacebookWrapper facebookWrapper = searchBean.getFacebookWrapper();
+
+        return new ResponseEntity<>(new Gson().toJson(facebookWrapper.getStoryTellers(ids, start, end)), HttpStatus.OK);
     }
 
     private Calendar stringToCalendar(String date) {

@@ -17,7 +17,7 @@ function statusChangeCallback(response) {
         // they are logged into this app or not.
         document.getElementById('accessToken').value = 'not_logged';
     }
-    
+
     document.forms["form-login-facebook"].submit();
 }
 
@@ -33,10 +33,9 @@ function checkLoginState() {
 window.fbAsyncInit = function () {
     FB.init({
         appId: 'InsertYourAppId',
-        cookie: true, // enable cookies to allow the server to access 
-        // the session
+        cookie: true, // enable cookies to allow the server to access the session
         xfbml: true, // parse social plugins on this page
-        version: 'v2.3' // use version 2.2
+        version: 'v2.4' // use version 2.2
     });
 
     // Now that we've initialized the JavaScript SDK, we call 

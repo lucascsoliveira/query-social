@@ -25,6 +25,6 @@ public class SearchBean {
     private Calendar endDate;
     private FacebookWrapper facebookWrapper;
     private List<Page> pages = new ArrayList<>();
-    private List<Page> selectedPages = new ArrayList<>();
+    private List<String> selectedPagesIds = new ArrayList<>();
 
 }
