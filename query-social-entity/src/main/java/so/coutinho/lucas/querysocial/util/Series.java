@@ -1,7 +1,5 @@
 package so.coutinho.lucas.querysocial.util;
 
-import java.util.ArrayList;
-import java.util.List;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +13,7 @@ public class Series {
 
     public static enum Type {
 
-        AREA("area");
+        AREA("area"), BAR("bar"), LINE("line");
 
         private final String value;
 
@@ -35,7 +33,7 @@ public class Series {
     private Object[][] data;
 
     public Series(String name) {
-        this.type = Type.AREA.toString();
+        this.type = Type.LINE.toString();
         this.name = name;
     }
 
