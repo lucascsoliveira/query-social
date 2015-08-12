@@ -1,9 +1,9 @@
 package so.coutinho.lucas.querysocial.web.controller;
 
 import com.google.gson.Gson;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import so.coutinho.lucas.querysocial.web.bean.ContextUrls;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.WebApplicationContext;
 import so.coutinho.lucas.querysocial.facebook.FacebookWrapper;
-import so.coutinho.lucas.querysocial.facebook.Page;
+import so.coutinho.lucas.querysocial.web.bean.ContextUrls;
 import so.coutinho.lucas.querysocial.web.bean.SearchBean;
 import so.coutinho.lucas.querysocial.web.bean.SessionAttributes;
 
@@ -26,38 +26,37 @@ import so.coutinho.lucas.querysocial.web.bean.SessionAttributes;
  * @author Lucas
  */
 @Controller
-@RequestMapping(ContextUrls.SEARCH)
+@RequestMapping(ContextUrls.MATCH)
 @Scope(WebApplicationContext.SCOPE_SESSION)
-public class SearchController extends AbstractController {
+public class MatchController extends AbstractController {
 
     @Autowired
     private SearchBean searchBean;
 
     @RequestMapping(method = RequestMethod.GET)
     public String loadForm(HttpSession session, ModelMap model) {
-        return doFilter(session, "search");
-    }
-
-    @RequestMapping(method = RequestMethod.POST)
-    public String loadList(HttpSession session, ModelMap model, @RequestParam("query") String query) {
-        FacebookWrapper fbWrapper = (FacebookWrapper) session.getAttribute(SessionAttributes.FB_SESSION);
-
-        List<Page> lista = fbWrapper.searchPages(query);
-        searchBean.setPages(lista);
-
-        model.addAttribute("showSearch", true);
-
-        return doFilter(session, "search");
+        return doFilter(session, "search-advanced");
     }
 
     @RequestMapping(value = ContextUrls.RESULT, method = RequestMethod.POST)
-    public String getResult(HttpSession session, ModelMap model, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("selectedPages") String selectedPages) {
+    public String getResult(HttpSession session, ModelMap model,
+            @RequestParam("startDate") String startDate,
+            @RequestParam("endDate") String endDate,
+            @RequestParam("pageId") String pageId,
+            @RequestParam("pageId2") String pageId2) {
+
+        System.out.println(startDate);
+        System.out.println(endDate);
+
         searchBean.setStartDate(stringToCalendar(startDate));
         searchBean.setEndDate(stringToCalendar(endDate));
         searchBean.setFacebookWrapper((FacebookWrapper) session.getAttribute(SessionAttributes.FB_SESSION));
-        searchBean.setSelectedPagesIds(stringToList(selectedPages));
+        List<String> selectedPages = new ArrayList<>();
+        selectedPages.add(pageId);
+        selectedPages.add(pageId2);
+        searchBean.setSelectedPagesIds(selectedPages);
 
-        return doFilter(session, "search-result");
+        return "search-result";
     }
 
     @ResponseBody

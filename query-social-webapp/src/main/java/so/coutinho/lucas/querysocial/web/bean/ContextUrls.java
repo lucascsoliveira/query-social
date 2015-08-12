@@ -16,12 +16,15 @@ public class ContextUrls {
      */
     public static final String LOGIN = "/login";
     public static final String LOGOUT = "/logout";
+    public static final String MATCH = "/match";
     public static final String SEARCH = "/search";
 
     /**
      * Metodos
      */
     public static final String RESULT = "/result";
+    public static final String RESULT_LIKES = RESULT + "/likes";
+    public static final String RESULT_STORYTELLERS = RESULT + "/storytellers";
 //
 //============================================================================//
 //                                                                            //
@@ -32,11 +35,14 @@ public class ContextUrls {
      */
     public String login = LOGIN;
     public String logout = LOGOUT;
+    public String match = MATCH;
     public String search = SEARCH;
 
     /**
      * Metodos
      */
     public String result = RESULT;
+    public String resultLikes = RESULT_LIKES;
+    public String resultStorytellers = RESULT_STORYTELLERS;
 
 }
